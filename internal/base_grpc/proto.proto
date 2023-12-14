@@ -1,0 +1,30 @@
+
+
+syntax = "proto3";
+
+option go_package = "google.golang.org/grpc/examples/route_guide/routeguide";
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.routeguide";
+option java_outer_classname = "RouteGuideProto";
+
+package BasegRPC;
+
+service Agent {
+  // A simple RPC.
+  //
+  // Obtains the feature at a given position.
+  //
+  // A feature with an empty name is returned if there's no feature at the given
+  // position.
+  rpc GetFeature(Point) returns (Feature) {}
+}
+
+message Point {
+  int32 latitude = 1;
+  int32 longitude = 2;
+}
+
+message Feature {
+  string name = 1;
+  Point location = 2;
+}
