@@ -3,9 +3,11 @@ package BaseModule
 import (
 	"fmt"
 
-	BasegRPC "bodyplate.com/internal/base_grpc"
-	Baserestapi "bodyplate.com/internal/base_rest_api"
+	BasegRPC "bodyplate.com/internal/base.grpc"
+	agentproto "bodyplate.com/internal/base.grpc/agent.proto"
+	Baserestapi "bodyplate.com/internal/base.rest.api"
 	"github.com/gorilla/mux"
+	"google.golang.org/grpc"
 )
 
 type BaseModule struct {
@@ -25,6 +27,6 @@ func (b *BaseModule) InitBaseCRUDRouter(router *mux.Router) {
 	b.BaseCRUDRouter.Sub = subRouter
 }
 
-func (b *BaseModule) InitGRPCRouter() {
-
+func (b *BaseModule) InitGRPCRouter(s *grpc.Server) {
+	agentproto.RegisterAgentServer(s, b.BaseGRPCController.AgentServer)
 }

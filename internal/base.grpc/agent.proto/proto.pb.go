@@ -4,7 +4,7 @@
 // 	protoc        v4.25.1
 // source: proto.proto
 
-package BasegRPC
+package agentproto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

@@ -4,7 +4,7 @@
 // - protoc             v4.25.1
 // source: proto.proto
 
-package BasegRPC
+package agentproto
 
 import (
 	context "context"
@@ -59,7 +59,7 @@ type AgentServer interface {
 	// A feature with an empty name is returned if there's no feature at the given
 	// position.
 	GetFeature(context.Context, *Point) (*Feature, error)
-	mustEmbedUnimplementedAgentServer()
+	
 }
 
 // UnimplementedAgentServer must be embedded to have forward compatible implementations.

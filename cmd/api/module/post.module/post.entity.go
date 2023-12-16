@@ -1,4 +1,4 @@
-package Postmodule
+package postmodule
 
 import "time"
 
