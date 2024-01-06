@@ -28,5 +28,5 @@ func (b *BaseModule) InitBaseCRUDRouter(router *mux.Router) {
 }
 
 func (b *BaseModule) InitGRPCRouter(s *grpc.Server) {
-	agentproto.RegisterAgentServer(s, b.BaseGRPCController.AgentServer)
+	agentproto.RegisterAgentServer (s, b.BaseGRPCController.AgentServer)
 }

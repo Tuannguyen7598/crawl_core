@@ -8,6 +8,8 @@ import (
 type Config struct {
 	Port    int
 	BaseUrl string
+	Uri_mongo string
+	DB_Mongo string
 }
 
 func GetConfigAvaiable() Config {
@@ -23,6 +25,8 @@ func GetConfigAvaiable() Config {
 	var Config = Config{
 		Port:    port,
 		BaseUrl: baseUrl,
+		Uri_mongo: "mongodb://user:pass@localhost:27017",
+		DB_Mongo: "crawl_data",
 	}
 	return Config
 

@@ -3,7 +3,7 @@ package agentmodule
 import "time"
 
 type Post struct {
-	EntityName      string
+	EntityName      string 
 	Id              int32
 	UserId          int32
 	Content         string

@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.25.1
-// source: proto.proto
+// source: base.grpc/agent.proto/proto.proto
 
-package agentproto
+package gRPC_agent
 
 import (
 	context "context"
@@ -22,13 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AgentClient interface {
-	// A simple RPC.
-	//
-	// Obtains the feature at a given position.
-	//
-	// A feature with an empty name is returned if there's no feature at the given
-	// position.
-	GetFeature(ctx context.Context, in *Point, opts ...grpc.CallOption) (*Feature, error)
+	SendDataHTTP(ctx context.Context, in *DataFromHttpResponse, opts ...grpc.CallOption) (*ResponseAgent, error)
+	SendDataDOM(ctx context.Context, in *DataDOM, opts ...grpc.CallOption) (*ResponseAgent, error)
+	SendActionDOM(ctx context.Context, in *ActionDOM, opts ...grpc.CallOption) (*ResponseAgent, error)
 }
 
 type agentClient struct {
@@ -39,9 +35,27 @@ func NewAgentClient(cc grpc.ClientConnInterface) AgentClient {
 	return &agentClient{cc}
 }
 
-func (c *agentClient) GetFeature(ctx context.Context, in *Point, opts ...grpc.CallOption) (*Feature, error) {
-	out := new(Feature)
-	err := c.cc.Invoke(ctx, "/BasegRPC.Agent/GetFeature", in, out, opts...)
+func (c *agentClient) SendDataHTTP(ctx context.Context, in *DataFromHttpResponse, opts ...grpc.CallOption) (*ResponseAgent, error) {
+	out := new(ResponseAgent)
+	err := c.cc.Invoke(ctx, "/BasegRPC.Agent/SendDataHTTP", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *agentClient) SendDataDOM(ctx context.Context, in *DataDOM, opts ...grpc.CallOption) (*ResponseAgent, error) {
+	out := new(ResponseAgent)
+	err := c.cc.Invoke(ctx, "/BasegRPC.Agent/SendDataDOM", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *agentClient) SendActionDOM(ctx context.Context, in *ActionDOM, opts ...grpc.CallOption) (*ResponseAgent, error) {
+	out := new(ResponseAgent)
+	err := c.cc.Invoke(ctx, "/BasegRPC.Agent/SendActionDOM", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,13 +66,9 @@ func (c *agentClient) GetFeature(ctx context.Context, in *Point, opts ...grpc.Ca
 // All implementations must embed UnimplementedAgentServer
 // for forward compatibility
 type AgentServer interface {
-	// A simple RPC.
-	//
-	// Obtains the feature at a given position.
-	//
-	// A feature with an empty name is returned if there's no feature at the given
-	// position.
-	GetFeature(context.Context, *Point) (*Feature, error)
+	SendDataHTTP(context.Context, *DataFromHttpResponse) (*ResponseAgent, error)
+	SendDataDOM(context.Context, *DataDOM) (*ResponseAgent, error)
+	SendActionDOM(context.Context, *ActionDOM) (*ResponseAgent, error)
 	
 }
 
@@ -66,8 +76,14 @@ type AgentServer interface {
 type UnimplementedAgentServer struct {
 }
 
-func (UnimplementedAgentServer) GetFeature(context.Context, *Point) (*Feature, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFeature not implemented")
+func (UnimplementedAgentServer) SendDataHTTP(context.Context, *DataFromHttpResponse) (*ResponseAgent, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendDataHTTP not implemented")
+}
+func (UnimplementedAgentServer) SendDataDOM(context.Context, *DataDOM) (*ResponseAgent, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendDataDOM not implemented")
+}
+func (UnimplementedAgentServer) SendActionDOM(context.Context, *ActionDOM) (*ResponseAgent, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendActionDOM not implemented")
 }
 func (UnimplementedAgentServer) mustEmbedUnimplementedAgentServer() {}
 
@@ -82,20 +98,56 @@ func RegisterAgentServer(s grpc.ServiceRegistrar, srv AgentServer) {
 	s.RegisterService(&Agent_ServiceDesc, srv)
 }
 
-func _Agent_GetFeature_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Point)
+func _Agent_SendDataHTTP_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DataFromHttpResponse)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AgentServer).GetFeature(ctx, in)
+		return srv.(AgentServer).SendDataHTTP(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/BasegRPC.Agent/GetFeature",
+		FullMethod: "/BasegRPC.Agent/SendDataHTTP",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AgentServer).GetFeature(ctx, req.(*Point))
+		return srv.(AgentServer).SendDataHTTP(ctx, req.(*DataFromHttpResponse))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Agent_SendDataDOM_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DataDOM)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AgentServer).SendDataDOM(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/BasegRPC.Agent/SendDataDOM",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AgentServer).SendDataDOM(ctx, req.(*DataDOM))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Agent_SendActionDOM_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActionDOM)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AgentServer).SendActionDOM(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/BasegRPC.Agent/SendActionDOM",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AgentServer).SendActionDOM(ctx, req.(*ActionDOM))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -108,10 +160,18 @@ var Agent_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AgentServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetFeature",
-			Handler:    _Agent_GetFeature_Handler,
+			MethodName: "SendDataHTTP",
+			Handler:    _Agent_SendDataHTTP_Handler,
+		},
+		{
+			MethodName: "SendDataDOM",
+			Handler:    _Agent_SendDataDOM_Handler,
+		},
+		{
+			MethodName: "SendActionDOM",
+			Handler:    _Agent_SendActionDOM_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto.proto",
+	Metadata: "base.grpc/agent.proto/proto.proto",
 }

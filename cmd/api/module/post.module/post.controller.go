@@ -20,7 +20,7 @@ func (b PostController) HandleGetRoute(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	fmt.Println("done", data)
+	fmt.Println("dondsds", data)
 }
 
 func (b PostController) HandlePostRoute(w http.ResponseWriter, r *http.Request) {
