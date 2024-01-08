@@ -7,8 +7,10 @@ import (
 
 	agentmodule "bodyplate.com/cmd/api/module/agent.module"
 	postmodule "bodyplate.com/cmd/api/module/post.module"
-	"bodyplate.com/cmd/api/route"
-	"bodyplate.com/internal/database"
+	Route "bodyplate.com/cmd/api/route"
+
+	Database "bodyplate.com/internal/repo"
+	Service "bodyplate.com/internal/service"
 	"google.golang.org/grpc"
 )
 
@@ -16,30 +18,28 @@ func main() {
 	go func() {
 		listen, err := net.Listen("tcp", "127.0.0.1:50052")
 		if err != nil {
-			fmt.Println("Server gRPC start err: %v", err)
+			fmt.Printf("Server gRPC start err: %v\n", err)
 			panic(err)
 		}
-		fmt.Println("Server gRPC running on: %v", listen.Addr())
+		fmt.Printf("Server gRPC running on: %v\n", listen.Addr())
 		grpcServer := grpc.NewServer()
 		agentmodule.Init(grpcServer)
-
 		grpcServer.Serve(listen)
-		fmt.Println("INIT SERVER SUCCESS")
 
 	}()
 	go func( ) {
-	database.DataBaselayer.Init()
+	Database.DataBaselayer.Init()
+	Service.ServiceLayer.Init()
 	}()
-	route.InitRestRoutes()
+	Route.InitRestRoutes()
+	
+	fmt.Printf("Server http running on: %s\n", "6666")
 	postmodule.Init()
-	fmt.Println("Server http running on: %v", "6666")
-	err := http.ListenAndServe(":6666", route.MuxRoute.Router)
+	err := http.ListenAndServe(":6666", Route.MuxRoute.Router)
+	
 	if err != nil {
-		fmt.Println("Server http start err : %v", err)
+		fmt.Println("Server http start err :", err)
 		panic(err)
 	} 
-	
-
-	// server gRPC
 
 }

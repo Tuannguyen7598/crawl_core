@@ -3,7 +3,7 @@ package postmodule
 import (
 	"fmt"
 
-	"bodyplate.com/cmd/api/route"
+	Route "bodyplate.com/cmd/api/route"
 	BaseModule "bodyplate.com/internal/base.module"
 )
 
@@ -13,7 +13,7 @@ func Init() {
 		BaseCRUDController: PostController{},
 	}
 	fmt.Println("Module", module.ModulePrefix, "init")
-	module.InitBaseCRUDRouter(route.MuxRoute.Router)
+	module.InitBaseCRUDRouter(Route.MuxRoute.Router)
 	module.BaseCRUDRouter.Sub.Path("/id").Methods("POST").HandlerFunc(GetPostByIdPost)
 
 }

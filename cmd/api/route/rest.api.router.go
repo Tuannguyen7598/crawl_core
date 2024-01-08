@@ -1,4 +1,4 @@
-package route
+package Route
 
 import (
 	"bodyplate.com/cmd/api/midleware"

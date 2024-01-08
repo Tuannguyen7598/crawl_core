@@ -1,4 +1,4 @@
-package Baserestapi
+package BaseRestApi
 
 import "github.com/gorilla/mux"
 

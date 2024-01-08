@@ -11,7 +11,7 @@ import (
 func Init(s *grpc.Server) {
 	module := BaseModule.BaseModule{
 		ModulePrefix: "agent",
-		BaseGRPCController: BasegRPC.BaseServerGRPC{
+		BaseGRPCController: BasegRPC.BaseGRPCServer{
 			AgentServer: &AgentController{},
 		},
 	}

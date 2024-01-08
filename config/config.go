@@ -10,6 +10,7 @@ type Config struct {
 	BaseUrl string
 	Uri_mongo string
 	DB_Mongo string
+	Uri_agent string
 }
 
 func GetConfigAvaiable() Config {
@@ -27,6 +28,7 @@ func GetConfigAvaiable() Config {
 		BaseUrl: baseUrl,
 		Uri_mongo: "mongodb://user:pass@localhost:27017",
 		DB_Mongo: "crawl_data",
+		Uri_agent:"localhost:9999",
 	}
 	return Config
 
