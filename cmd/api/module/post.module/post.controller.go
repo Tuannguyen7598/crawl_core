@@ -1,7 +1,6 @@
 package postmodule
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -15,12 +14,7 @@ type PostController struct {
 }
 
 func (b PostController) HandleGetRoute(w http.ResponseWriter, r *http.Request) {
-	var data Dto
-	err := json.NewDecoder(r.Body).Decode(&data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-	}
-	fmt.Println("dondsds", data)
+	fmt.Println("Post controller route get")
 }
 
 func (b PostController) HandlePostRoute(w http.ResponseWriter, r *http.Request) {
@@ -31,8 +25,4 @@ func (b PostController) HandlePutRoute(w http.ResponseWriter, r *http.Request) {
 }
 func (b PostController) HandleDeleteRoute(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Post controller route delete")
-}
-
-func GetPostByIdPost(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("id")
 }

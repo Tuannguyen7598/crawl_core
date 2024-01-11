@@ -14,6 +14,5 @@ func Init() {
 	}
 	fmt.Println("Module", module.ModulePrefix, "init")
 	module.InitBaseCRUDRouter(Route.MuxRoute.Router)
-	module.BaseCRUDRouter.Sub.Path("/id").Methods("POST").HandlerFunc(GetPostByIdPost)
 
 }

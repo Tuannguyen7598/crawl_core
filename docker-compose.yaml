@@ -1,13 +1,49 @@
-version: "3"
+version: "1.0"
 
 services:
-  mongodb:
-    container_name: mongodb
+  mongoread:
+    container_name: mongo-read
     image: mongodb/mongodb-community-server:6.0-ubi8
+    ports:
+      - 27018:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=12345
+    restart: always
+    volumes:
+      - /Users/macbook/volumes/mongo_read:/data/db
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
+    networks:
+      - mongors-network
+
+  mongowrite:
+    container_name: mongo-write
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    volumes:
+      - /Users/macbook/volumes/mongo_write:/data/db
+      - ./rs-init.sh:/scripts/rs-init.sh
     ports:
       - 27017:27017
     environment:
       - MONGO_INITDB_ROOT_USERNAME=user
       - MONGO_INITDB_ROOT_PASSWORD=pass
+    restart: always
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
+    networks:
+      - mongors-network
+
+  mongo:
+    container_name: mongodb
+    image: mongodb/mongodb-community-server:6.0-ubi8
     volumes:
-      - /Users/macbook/volumes/mongodb:/data/db
+      - /Users/macbook/volumes/mongo:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    restart: always
+
+networks:
+  mongors-network:
+    driver: bridge

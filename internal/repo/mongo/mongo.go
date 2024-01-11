@@ -104,7 +104,7 @@ func (m *MongoDB) Init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Connected to MongoDB!")
+
 	m.conection = client
 
 	// * ResRepository * //
@@ -140,5 +140,5 @@ func (m *MongoDB) Init() {
 	})
 	m.DomRepo = domRepo
 	// * DomRepository * //
-
+	fmt.Println("Connected to MongoDB!")
 }

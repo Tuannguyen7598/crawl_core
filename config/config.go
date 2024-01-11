@@ -6,10 +6,10 @@ import (
 )
 
 type Config struct {
-	Port    int
-	BaseUrl string
+	Port      int
+	BaseUrl   string
 	Uri_mongo string
-	DB_Mongo string
+	DB_Mongo  string
 	Uri_agent string
 }
 
@@ -24,11 +24,11 @@ func GetConfigAvaiable() Config {
 	}
 
 	var Config = Config{
-		Port:    port,
-		BaseUrl: baseUrl,
+		Port:      port,
+		BaseUrl:   baseUrl,
 		Uri_mongo: "mongodb://user:pass@localhost:27017",
-		DB_Mongo: "crawl_data",
-		Uri_agent:"localhost:9999",
+		DB_Mongo:  "crawl_data",
+		Uri_agent: "localhost:9999",
 	}
 	return Config
 
