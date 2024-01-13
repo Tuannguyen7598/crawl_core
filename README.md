@@ -1,5 +1,9 @@
 # Go Crawl Core
 
+## System diagram
+
+![images](infrastructure.png)
+
 ## Features
 
 - [x] Package manager: go mod
