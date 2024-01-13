@@ -2,7 +2,7 @@
 
 ## System diagram
 
-![images](infrastructure.png)
+![images](infrastruture.png)
 
 ## Features
 
